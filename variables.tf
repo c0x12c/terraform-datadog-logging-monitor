@@ -23,6 +23,7 @@ variable "new_issue" {
     critical                = optional(number, 1)
     critical_recovery       = optional(number, 0)
     additional_filter_regex = optional(string, "")
+    time_window             = optional(string, "1d")
   })
   default = null
 }

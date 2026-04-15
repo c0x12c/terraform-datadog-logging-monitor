@@ -9,7 +9,7 @@ resource "datadog_monitor" "high_number_of_errors" {
   ]
 
   query    = <<EOT
-"error-tracking("env:${var.environment} service:${var.high_number_of_errors.service_regex} ${var.high_number_of_errors.additional_filter_regex}").source("${var.high_number_of_errors.source}").impact().rollup("count").by("issue.id").last("${var.high_number_of_errors.time_window}") > ${var.high_number_of_errors.critical}"
+error-tracking("env:${var.environment} service:${var.high_number_of_errors.service_regex} ${var.high_number_of_errors.additional_filter_regex}").source("${var.high_number_of_errors.source}").impact().rollup("count").by("issue.id").last("${var.high_number_of_errors.time_window}") > ${var.high_number_of_errors.critical}
 EOT
   name     = var.high_number_of_errors.name
   priority = var.high_number_of_errors.priority
