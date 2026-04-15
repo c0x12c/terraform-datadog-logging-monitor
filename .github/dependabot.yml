@@ -6,7 +6,7 @@ updates:
       interval: weekly
     commit-message:
       prefix: 'deps-gh-actions:'
-    labels: []
+    labels: [ ]
     groups:
       github-actions:
         patterns:
