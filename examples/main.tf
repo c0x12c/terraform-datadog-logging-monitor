@@ -1,4 +1,24 @@
 locals {
+  http_5xx = {
+    name          = "5xx responses detected"
+    priority      = 2
+    service_regex = "service-platform"
+    time_window   = "5m"
+    message       = <<EOT
+5xx responses detected for service {{service.name}} on resource {{resource_name}}.
+EOT
+  }
+
+  http_4xx = {
+    name          = "4xx responses detected"
+    priority      = 2
+    service_regex = "service-platform"
+    time_window   = "5m"
+    message       = <<EOT
+4xx responses detected for service {{service.name}} on resource {{resource_name}}.
+EOT
+  }
+
   high_number_of_errors = {
     name                    = "High number of errors detected"
     priority                = 5
@@ -46,6 +66,9 @@ module "logging_monitor" {
 
   environment         = "dev"
   require_full_window = false
+
+  http_5xx = local.http_5xx
+  http_4xx = local.http_4xx
 
   high_number_of_errors = local.high_number_of_errors
   new_issue             = local.new_issue

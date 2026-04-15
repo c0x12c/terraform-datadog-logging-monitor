@@ -1,3 +1,49 @@
+resource "datadog_monitor" "http_5xx" {
+  count = var.http_5xx != null ? 1 : 0
+
+  type = "trace-analytics alert"
+  tags = [
+    "created_by:terraform",
+    "env:${var.environment}",
+    "service:${var.http_5xx.service_regex}"
+  ]
+
+  query    = "trace-analytics(\"env:${var.environment} @http.status_code:5* service:${var.http_5xx.service_regex} ${var.http_5xx.additional_filter_regex}\").rollup(\"count\").by(\"service,env,resource_name\").last(\"${var.http_5xx.time_window}\") > ${var.http_5xx.critical}"
+  name     = var.http_5xx.name
+  priority = var.http_5xx.priority
+  message  = var.http_5xx.message
+
+  monitor_thresholds {
+    critical          = var.http_5xx.critical
+    critical_recovery = var.http_5xx.critical_recovery
+  }
+
+  require_full_window = var.require_full_window
+}
+
+resource "datadog_monitor" "http_4xx" {
+  count = var.http_4xx != null ? 1 : 0
+
+  type = "trace-analytics alert"
+  tags = [
+    "created_by:terraform",
+    "env:${var.environment}",
+    "service:${var.http_4xx.service_regex}"
+  ]
+
+  query    = "trace-analytics(\"env:${var.environment} @http.status_code:4* service:${var.http_4xx.service_regex} ${var.http_4xx.additional_filter_regex}\").rollup(\"count\").by(\"service,env,resource_name\").last(\"${var.http_4xx.time_window}\") > ${var.http_4xx.critical}"
+  name     = var.http_4xx.name
+  priority = var.http_4xx.priority
+  message  = var.http_4xx.message
+
+  monitor_thresholds {
+    critical          = var.http_4xx.critical
+    critical_recovery = var.http_4xx.critical_recovery
+  }
+
+  require_full_window = var.require_full_window
+}
+
 resource "datadog_monitor" "high_number_of_errors" {
   count = var.high_number_of_errors != null ? 1 : 0
 
